@@ -29,7 +29,6 @@ class util{
         for(let i=0;i<time.length;i++){
             newTime += time[i]=="T" || time[i]=="Z" ? " " : time[i];
         }
-        console.log(newTime);
         return newTime
     }
 
