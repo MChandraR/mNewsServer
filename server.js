@@ -1,4 +1,9 @@
 const express = require('express');
+const mysql = require('./util/mysql');
+
+const MySQL = mysql.getInstance();
+MySQL.setConnection();
+
 const { async } = require('rxjs');
 const app = express();
 const multer = require('multer');

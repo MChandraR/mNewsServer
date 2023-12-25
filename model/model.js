@@ -1,4 +1,5 @@
 const db = require('../util/mysql');
+const mysql = db.getInstance();
 
 class model{
     table;
@@ -26,7 +27,7 @@ class model{
     }
 
     get(callback){
-        db.select(this.field,this.table + " " + this.customQuery ,(e)=>{ 
+        mysql.select(this.field,this.table + " " + this.customQuery ,(e)=>{ 
             this.customQuery = ""
             this.field = "*"
             return callback(e);
@@ -36,7 +37,7 @@ class model{
     create(val,callback){
         let data = {};
         for(let idx in val) if(this.fillable.includes(idx)) data[idx] = val[idx];
-        db.insert(this.table,data,(e)=>{ return callback(e)});
+        mysql.insert(this.table,data,(e)=>{ return callback(e)});
         data = {};
     }
 
@@ -44,7 +45,7 @@ class model{
         let updateData = {};
         console.log(val);
         for(let idx in val) if(this.fillable.includes(idx) && val[idx] != null) updateData[idx] = val[idx];
-        db.update(this.table,updateData,this.condition,(e)=>{
+        mysql.update(this.table,updateData,this.condition,(e)=>{
             this.condition = {};
             return callback(e)
         });
@@ -52,7 +53,7 @@ class model{
     }
 
     delete(callback){
-        db.remove(this.table,this.condition,(e)=>{ return callback(e)});
+        mysql.remove(this.table,this.condition,(e)=>{ return callback(e)});
         this.condition = {};
     }
 
