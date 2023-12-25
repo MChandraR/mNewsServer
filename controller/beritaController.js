@@ -1,7 +1,8 @@
 const berita = require('../model/berita'); 
 const beritas = new berita();
 const axios = require('axios');
-const util = require('../util/util');
+const utl = require('../util/util');
+const util = new utl();
 
 let dataBerita = []
 let kategori = {
@@ -58,7 +59,7 @@ class beritaController {
                             "url" : resData.articles[i].url,
                             "author" : resData.articles[i].author,
                             "gambar" : resData.articles[i].urlToImage,
-                            "waktu" : new Date(resData.articles[i].publishedAt),
+                            "waktu" : util.encodeTime(resData.articles[i].publishedAt),
                             "sumber" : resData.articles[i].source.name
                         })
                         if(kategori[tag]!=null && !kategori[tag].hasadded[resData.articles[i].title]){
@@ -70,7 +71,7 @@ class beritaController {
                                 "url" : resData.articles[i].url,
                                 "author" : resData.articles[i].author,
                                 "gambar" : resData.articles[i].urlToImage,
-                                "waktu" : new Date(resData.articles[i].publishedAt),
+                                "waktu" : util.encodeTime(resData.articles[i].publishedAt),
                                 "sumber" : resData.articles[i].source.name
                             });
                             kategori[tag].hasadded[resData.articles[i].title] = 1;
@@ -90,7 +91,7 @@ class beritaController {
                             "url" : resData.posts[i].link,
                             "author" : "-",
                             "gambar" : resData.posts[i].thumbnail,
-                            "waktu" : resData.posts[i].pubDate,
+                            "waktu" : util.encodeTime(resData.posts[i].pubDate),
                             "sumber" :"ANTARA News"
                         });
                         if(kategori[tag]!=null && !kategori[tag].hasadded[resData.posts[i].title]){
@@ -102,7 +103,7 @@ class beritaController {
                                 "url" : resData.posts[i].link,
                                 "author" : "-",
                                 "gambar" : resData.posts[i].thumbnail,
-                                "waktu" : resData.posts[i].pubDate,
+                                "waktu" : util.encodeTime(resData.posts[i].pubDate),
                                 "sumber" :"ANTARA News"
                             });
                             kategori[tag].hasadded[resData.posts[i].title] = 1;

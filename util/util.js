@@ -1,3 +1,6 @@
+String.prototype.replaceAt = function(index, replacement) {
+    return this.substring(0, index) + replacement + this.substring(index + replacement.length);
+}
 
 class util{
     sendResponse(res,status,message,data=null){
@@ -20,6 +23,17 @@ class util{
         }
         return token;
     }
+
+    encodeTime(time){
+        var newTime = "";
+        for(let i=0;i<time.length;i++){
+            newTime += time[i]=="T" || time[i]=="Z" ? " " : time[i];
+        }
+        console.log(newTime);
+        return newTime
+    }
+
+  
 }
 
 module.exports = util;
