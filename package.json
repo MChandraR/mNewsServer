@@ -6,6 +6,7 @@
     "input": "^1.0.1",
     "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
+    "mysql2": "^3.6.5",
     "rxjs": "^7.8.1"
   },
   "scripts": {
@@ -15,7 +16,6 @@
   "description": "Framework untuk RestAPI with mysql db \r - by M.Chandra.R\r made with Node.js",
   "version": "1.0.0",
   "main": "server.js",
-  "devDependencies": {},
   "keywords": [],
   "author": "MChandra",
   "license": "ISC"
