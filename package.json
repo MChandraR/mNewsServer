@@ -14,7 +14,7 @@
   "name": "server",
   "description": "Framework untuk RestAPI with mysql db \r - by M.Chandra.R\r made with Node.js",
   "version": "1.0.0",
-  "main": "mcr.js",
+  "main": "server.js",
   "devDependencies": {},
   "keywords": [],
   "author": "",
