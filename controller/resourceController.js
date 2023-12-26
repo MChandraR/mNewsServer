@@ -1,8 +1,6 @@
 const model = require('../model/model'); 
 const models = new model();
 const fs = require('fs');
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' })
 
 class resourceController {
     uploadProfilePicture(res,body,file){
