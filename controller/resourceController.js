@@ -10,13 +10,17 @@ class resourceController {
             "tmp_path" : file.filename,
             "size" : (file.size/1000).toString()+" kb"
         });
-        fs.copyFile("./"+file.path,"./public/img/users/profile/"+file.originalname,(res)=>{
-            if(res!=null)console.log(res);
-        });
+        // fs.copyFile("./"+file.path,"./public/img/users/profile/"+file.originalname,(res)=>{
+        //     if(res!=null)console.log(res);
+        // });
         // fs.unlink("./"+file.path,(message)=>{
         //     console.log(message);
         // });
-        res.send(file);
+        res.send({
+            "filename" : file.originalname,
+            "tmp_path" : file.filename,
+            "size" : (file.size/1000).toString()+" kb"
+        });
     }
 }
 
