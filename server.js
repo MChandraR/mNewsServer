@@ -6,8 +6,8 @@ MySQL.setConnection();
 
 const { async } = require('rxjs');
 const app = express();
-const multer = require('multer');
-const upload = multer({ dest: 'public/temp/' })
+// const multer = require('multer');
+// const upload = multer({ dest: 'public/temp/' })
 const server = require('http').createServer(app);
 const usersController = require('./controller/usersController');
 const beritaController = require('./controller/beritaController');
@@ -43,7 +43,7 @@ app.post('/api/bookmarks',(req,res)=>{bmC.getUserBookmark(res,req.body)});
 app.put('/api/bookmark',(req,res)=>{bmC.removeUserBookmark(res,req.body)});
 app.post('/api/bookmark/search',(req,res)=>{bmC.searchUserBookmark(res,req.body)});
 
-app.post('/api/upload/profile',upload.single('file'),(req,res)=>{sC.uploadProfilePicture(res,req.body,req.file)});
+// app.post('/api/upload/profile',upload.single('file'),(req,res)=>{sC.uploadProfilePicture(res,req.body,req.file)});
 
 app.get('/api/notif',(req,res)=>{nC.getNotif(res)});
 
