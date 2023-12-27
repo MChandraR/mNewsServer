@@ -97,18 +97,23 @@ app.get('/img/users/profile/*',async (req,res)=>{
         const command = new GetObjectCommand(params);
         const fileUrl = await getSignedUrl(s3,command,{expiresIn:3600});
 
-        try {
-            const response = await axios.get(fileUrl, { responseType: 'arraybuffer' });
-            console.log(fileUrl);
-            // Set appropriate headers
-            res.setHeader('Content-Type', 'image/png');
-            res.setHeader('Content-Length', response.headers['content-length']);        
-            // Pipe the file stream from the response to the HTTP response
-            res.send(Buffer.from(await response.data));
-          } catch (error) {
-            console.error('Error downloading file:', error);
-            res.status(500).send('Error downloading file');
-          }
+        res.send({
+            "key" : key,
+            "profile_url" : fileUrl
+        });
+
+        // try {
+        //     const response = await axios.get(fileUrl, { responseType: 'arraybuffer' });
+        //     console.log(fileUrl);
+        //     // Set appropriate headers
+        //     res.setHeader('Content-Type', 'image/png');
+        //     res.setHeader('Content-Length', response.headers['content-length']);        
+        //     // Pipe the file stream from the response to the HTTP response
+        //     res.send(Buffer.from(await response.data));
+        //   } catch (error) {
+        //     console.error('Error downloading file:', error);
+        //     res.status(500).send('Error downloading file');
+        //   }
        
 });
 
