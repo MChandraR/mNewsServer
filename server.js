@@ -99,12 +99,12 @@ app.get('/img/users/profile/*',async (req,res)=>{
 
         try {
             const response = await axios.get(fileUrl, { responseType: 'arraybuffer' });
-        
+            console.log(fileUrl);
             // Set appropriate headers
-            res.setHeader('Content-Type', response.headers['content-type']);
+            res.setHeader('Content-Type', 'image/png');
             res.setHeader('Content-Length', response.headers['content-length']);        
             // Pipe the file stream from the response to the HTTP response
-            res.end(response.data, 'binary');
+            res.send(Buffer.from(response.data));
           } catch (error) {
             console.error('Error downloading file:', error);
             res.status(500).send('Error downloading file');
