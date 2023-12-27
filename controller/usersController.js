@@ -3,6 +3,8 @@ const { update } = require('../util/mysql');
 let util = require('../util/util');
 util = new util();
 const users = new user();
+require('dotenv').config();
+
 const {
    PutObjectCommand
 } = require('@aws-sdk/client-s3');
@@ -64,7 +66,7 @@ class usersController {
                     const fileStream = fs.createReadStream("./public/img/users/profile/base.png");
                 
                     const params = {
-                      Bucket: "cyclic-olive-pelican-belt-eu-central-1",
+                      Bucket: process.env.BUCKET,
                       Key: newID+".png", // Specify the desired key in S3
                       Body: fileStream,
                     };
