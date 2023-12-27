@@ -3,6 +3,9 @@ const { update } = require('../util/mysql');
 let util = require('../util/util');
 util = new util();
 const users = new user();
+const {
+   PutObjectCommand
+} = require('@aws-sdk/client-s3');
 const fs = require("fs")
 const sessionController = require("./sessionController");
 const sC = new sessionController();
@@ -40,7 +43,7 @@ class usersController {
 
     }
 
-    signUp(res,data){
+    signUp(res,data,s3){
         if(data['username']==null || data['password']==null || data['email'] == null){
             util.sendResponse(res,"gagal","Invalid request");
             return;
@@ -55,10 +58,28 @@ class usersController {
                 "password" : data['password'],
                 "email" : data['email'],
                 "role" : "user"
-            }, (result)=>{
-                fs.copyFile("./public/img/users/profile/base.png","./public/img/users/profile/"+newID+".png",(result)=>{
-                    console.log(result);
-                });
+            },async (result)=>{
+
+                try {
+                    const fileStream = fs.createReadStream("./public/img/users/profile/base.png");
+                
+                    const params = {
+                      Bucket: "cyclic-olive-pelican-belt-eu-central-1",
+                      Key: newID+".png", // Specify the desired key in S3
+                      Body: fileStream,
+                    };
+                
+                    const command = new PutObjectCommand(params);
+                    const result = await s3.send(command);
+                
+                    console.log(`File ${newID+".png"} uploaded successfully: ${result.Location}`);
+                  } catch (error) {
+                    console.error('Error uploading file:', error);
+                  }
+
+                // fs.copyFile("./public/img/users/profile/base.png","./public/img/users/profile/"+newID+".png",(result)=>{
+                //     console.log(result);
+                // });
                 res.send(
                    result
                 );

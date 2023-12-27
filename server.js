@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('./util/mysql');
 const util = require('util');
 const axios = require('axios');
+require('dotenv').config();
 
 const MySQL = mysql.getInstance();
 MySQL.setConnection();
@@ -14,7 +15,15 @@ const {
     S3, GetObjectCommand
 } = require('@aws-sdk/client-s3');
 
-const s3 = new S3();
+const s3 = new S3(
+    {
+        credentials:{
+            accessKeyId : process.env.ACCESS_KEY,
+            secretAccessKey : process.env.SECRET_KEY
+        },
+        region : process.env.REGION
+    }
+);
 const getSignedUrl = require('@aws-sdk/s3-request-presigner').getSignedUrl;
 const fs = require('fs');
 
@@ -41,7 +50,7 @@ app.get('/',(req,res)=>{ res.send("Mcr Framework")});
 
 app.get('/api/login',(req,res)=>{uC.getAllUser(res)});
 app.post('/api/login',(req,res)=>{uC.signIn(res,req.body,req)});
-app.post('/api/signup',(req,res)=>{uC.signUp(res,req.body)});
+app.post('/api/signup',(req,res)=>{uC.signUp(res,req.body,s3)});
 app.put('/api/profile',(req,res)=>{uC.updateProfile(res,req.body)});
 
 app.get('/api/berita',(req,res)=>{bC.getBerita(res,req)});
@@ -60,7 +69,7 @@ app.get('/api/notif',(req,res)=>{nC.getNotif(res)});
 const upload = multer({
     storage : multerS3({
         s3 : s3,
-        bucket : "cyclic-olive-pelican-belt-eu-central-1",
+        bucket : "mnenwsfilestorage",
         metadata : (_, file, cb)=>{
             cb(null, {"fieldName" : file.fieldname});
         },
@@ -81,7 +90,7 @@ app.get('/img/users/profile/*',async (req,res)=>{
     var key = req.url.split("/")[4];
 
         const params = {
-          Bucket: 'cyclic-olive-pelican-belt-eu-central-1',
+          Bucket: 'mnenwsfilestorage',
           Key: key,
         };
 
