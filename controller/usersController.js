@@ -63,7 +63,7 @@ class usersController {
             },async (result)=>{
 
                 try {
-                    const fileStream = fs.createReadStream("./public/img/users/profile/base.png");
+                    const fileStream = fs.createReadStream("../public/img/users/profile/base.png");
                 
                     const params = {
                       Bucket: process.env.BUCKET,
