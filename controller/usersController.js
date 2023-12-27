@@ -6,7 +6,7 @@ const users = new user();
 require('dotenv').config();
 
 const {
-   PutObjectCommand
+   PutObjectCommand, CopyObjectCommand
 } = require('@aws-sdk/client-s3');
 const fs = require("fs")
 const sessionController = require("./sessionController");
@@ -62,16 +62,14 @@ class usersController {
                 "role" : "user"
             },async (result)=>{
 
-                try {
-                    const fileStream = fs.createReadStream("../public/img/users/profile/base.png");
-                
+                try {                
                     const params = {
                       Bucket: process.env.BUCKET,
                       Key: newID+".png", // Specify the desired key in S3
-                      Body: fileStream,
+                      CopySource : '/'+process.env.BUCKET+'/base.png',
                     };
                 
-                    const command = new PutObjectCommand(params);
+                    const command = new CopyObjectCommand(params);
                     const result = await s3.send(command);
                 
                     console.log(`File ${newID+".png"} uploaded successfully: ${result.Location}`);
@@ -79,9 +77,6 @@ class usersController {
                     console.error('Error uploading file:', error);
                   }
 
-                // fs.copyFile("./public/img/users/profile/base.png","./public/img/users/profile/"+newID+".png",(result)=>{
-                //     console.log(result);
-                // });
                 res.send(
                    result
                 );
