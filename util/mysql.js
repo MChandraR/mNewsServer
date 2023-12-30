@@ -23,7 +23,9 @@ class MySQL{
             password : process.env.PASS,
             database : process.env.DB
         });
-        this.db.connect();
+        this.db.connect((e)=>{
+            
+        });
     }
 
    
@@ -41,7 +43,6 @@ class MySQL{
     }
     
     async insert(table,data,callback){
-        if(error) this.setConnection();
         this.db.query("INSERT INTO "+table+ " SET ?",data,(error,result,field)=>{
             return callback(error ?
                 {
@@ -58,7 +59,6 @@ class MySQL{
     }
     
     async remove(table,data,callback){
-        if(error) this.setConnection();
         this.db.query("DELETE FROM "+table+ " WHERE ?",data,(error,result,field)=>{
             return callback(error ? 
                 {
@@ -75,7 +75,6 @@ class MySQL{
         });
     }
     async update(table,data,condition,callback){
-        if(error) this.setConnection();
         this.db.query("UPDATE "+table+ " SET ? WHERE ?",[data,condition],(error,result,field)=>{
             return callback(error ?
                 {
