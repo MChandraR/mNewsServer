@@ -5,7 +5,7 @@ const axios = require('axios');
 require('dotenv').config();
 
 const MySQL = mysql.getInstance();
-MySQL.setConnection();
+// MySQL.setConnection();
 
 const { async } = require('rxjs');
 const app = express();

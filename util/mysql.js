@@ -6,7 +6,13 @@ const { async } = require('rxjs');
 class MySQL{
 
     constructor() {
-        this.db = null;
+        this.pool = mysql.createPool({
+            connectionLimit: 3, // Adjust this value based on your needs
+            host: process.env.HOST,
+            user: process.env.USER,
+            password: process.env.PASS,
+            database: process.env.DB
+        });
     }
 
     static getInstance() {
@@ -16,73 +22,115 @@ class MySQL{
         return MySQL.instance;
     }
 
-    setConnection(){
-        this.db = mysql.createConnection({
-            host : process.env.HOST,
-            user : process.env.USER,
-            password : process.env.PASS,
-            database : process.env.DB
-        });
+    getConnection(callback) {
+        this.pool.getConnection(callback);
     }
+
+    // setConnection(){
+    //     this.db = mysql.createConnection({
+    //         host : process.env.HOST,
+    //         user : process.env.USER,
+    //         password : process.env.PASS,
+    //         database : process.env.DB
+    //     });
+    // }
 
    
     async select(field,model,callback){
         let qry = "SELECT "+field+" FROM " + model;
-        //console.log(qry)
-        this.db.query(qry,(error,result,field)=>{
-            return callback(error ? {
-                status : "error",
-                message : error
+        this.getConnection((err, connection) => {
+            if (err) {
+                reject(err);
             }
-                 : result);
+
+            connection.query(qry,(error,result,field)=>{
+                return callback(error ? {
+                    status : "error",
+                    message : error
+                }
+                     : result);
+            });
+
+            // Release the connection when done
+            connection.release();
         });
+        //console.log(qry)
+        
     }
     
     async insert(table,data,callback){
-        this.db.query("INSERT INTO "+table+ " SET ?",data,(error,result,field)=>{
-            return callback(error ?
-                {
-                    "status" : "error",
-                    "message" : error,
-                    "data" : null
-                }:
-                {
-                    "status" : "sukses",
-                    "message" : "berhasil menambahkan data !",
-                    "data" : result
+        this.getConnection((err, connection) => {
+            if (err) {
+                reject(err);
+            }
+            connection.query("INSERT INTO "+table+ " SET ?",data,(error,result,field)=>{
+                this.getConnection((res)=>{
+
                 });
+                connection.release();
+                return callback(error ?
+                    {
+                        "status" : "error",
+                        "message" : error,
+                        "data" : null
+                    }:
+                    {
+                        "status" : "sukses",
+                        "message" : "berhasil menambahkan data !",
+                        "data" : result
+                    });
+            });
         });
     }
     
     async remove(table,data,callback){
-        this.db.query("DELETE FROM "+table+ " WHERE ?",data,(error,result,field)=>{
-            return callback(error ? 
-                {
-                    "status" : "error",
-                    "message" : error,
-                    "data" : null
-                }:
-                {
-                    "status" : "sukses",
-                    "message" : "berhasil menghapus data !",
-                    "data" : null
+        this.getConnection((err, connection) => {
+                if (err) {
+                    reject(err);
+                }
+            connection.query("DELETE FROM "+table+ " WHERE ?",data,(error,result,field)=>{
+                this.getConnection((res)=>{
+
                 });
-            
+                connection.release();
+                return callback(error ? 
+                    {
+                        "status" : "error",
+                        "message" : error,
+                        "data" : null
+                    }:
+                    {
+                        "status" : "sukses",
+                        "message" : "berhasil menghapus data !",
+                        "data" : null
+                    });
+                
+            });
         });
     }
     async update(table,data,condition,callback){
-        this.db.query("UPDATE "+table+ " SET ? WHERE ?",[data,condition],(error,result,field)=>{
-            return callback(error ?
-                {
-                    "status" : "error",
-                    "message" : error,
-                    "data" : null
-                }:
-                {
-                    "status" : "sukses",
-                    "message" : "berhasil mengupdate data !",
-                    "data" : result
+        this.getConnection((err, connection) => {
+                if (err) {
+                    reject(err);
+                }
+            connection.query("UPDATE "+table+ " SET ? WHERE ?",[data,condition],(error,result,field)=>{
+                this.getConnection((res)=>{
+
                 });
+                connection.release();
+                return callback(error ?
+                    {
+                        "status" : "error",
+                        "message" : error,
+                        "data" : null
+                    }:
+                    {
+                        "status" : "sukses",
+                        "message" : "berhasil mengupdate data !",
+                        "data" : result
+                    });
+            });
+
         });
     }
 }
