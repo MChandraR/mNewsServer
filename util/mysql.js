@@ -23,9 +23,6 @@ class MySQL{
             password : process.env.PASS,
             database : process.env.DB
         });
-        this.db.connect((e)=>{
-
-        });
     }
 
    
