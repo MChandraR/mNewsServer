@@ -204,7 +204,6 @@ class beritaController {
     } 
 
     addBerita(data,callback){
-
         console.log(data);
         beritas.select(" SUBSTR(berita_id,2) as newID ").customSelectQuery(" ORDER BY berita_id DESC LIMIT 1").get((result)=>{
             console.log(result);
