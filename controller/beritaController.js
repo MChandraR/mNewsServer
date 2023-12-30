@@ -207,14 +207,24 @@ class beritaController {
 
         console.log(data);
         beritas.select(" SUBSTR(berita_id,2) as newID ").customSelectQuery(" ORDER BY berita_id DESC LIMIT 1").get((result)=>{
+            console.log(result);
             let newID = JSON.parse(JSON.stringify(result))[0];
-            if(result.newID==null){
+            console.log(newID);
+            if(newID==null){
                 return callback({
                     "status" : "error",
                     "message" : "Tidak dapat membuat bookmark ",
                     "newID" : "-"
                 });
             }
+            if(newID.newID==null){
+                return callback({
+                    "status" : "error",
+                    "message" : "Tidak dapat membuat bookmark ",
+                    "newID" : "-"
+                });
+            }
+            newID = newID.newID;
             newID = "000000"+(parseInt(newID)+1).toString();
             newID = "B" + newID.slice(-6);
             beritas.create({
