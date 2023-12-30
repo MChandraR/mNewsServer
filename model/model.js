@@ -1,5 +1,5 @@
-const db = require('../util/mysql');
-const mysql = db.getInstance();
+const MySQL = require('../util/mysql');
+const mysql = MySQL.getInstance();
 
 class model{
     table;

@@ -10,10 +10,10 @@ class MySQL{
     }
 
     static getInstance() {
-        if (!this.instance) {
-          this.instance = new MySQL();
+        if (!MySQL.instance) {
+            MySQL.instance = new MySQL();
         }
-        return this.instance;
+        return MySQL.instance;
     }
 
     setConnection(){
