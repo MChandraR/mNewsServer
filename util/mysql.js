@@ -7,7 +7,7 @@ class MySQL{
 
     constructor() {
         this.pool = mysql.createPool({
-            connectionLimit: 3, // Adjust this value based on your needs
+            connectionLimit: 1, // Adjust this value based on your needs
             host: process.env.HOST,
             user: process.env.USER,
             password: process.env.PASS,
