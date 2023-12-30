@@ -36,7 +36,7 @@ let APIsource = [
     //"http://api.mediastack.com/v1/news?access_key=3a799119da9e33cd4f9b2f29671f7f72&keywords=&countries=id",
     "https://api-berita-indonesia.vercel.app/antara/terbaru/",
     "https://api-berita-indonesia.vercel.app/cnbc/terbaru/",
-    "https://newsapi.org/v2/top-headlines?country=id&apiKey=6935046771544a44aa3128676581d820"
+    // "https://newsapi.org/v2/top-headlines?country=id&apiKey=6935046771544a44aa3128676581d820"
 
 ];
 
