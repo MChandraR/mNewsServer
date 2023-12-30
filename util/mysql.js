@@ -48,6 +48,7 @@ class MySQL{
             }
 
             connection.query(qry,(error,result,field)=>{
+                connection.release();
                 return callback(error ? {
                     status : "error",
                     message : error
@@ -56,7 +57,7 @@ class MySQL{
             });
 
             // Release the connection when done
-            connection.release();
+            
         });
         //console.log(qry)
         
@@ -66,14 +67,12 @@ class MySQL{
         this.getConnection((err, connection) => {
             if (err) {
                 console.log(err);
+                return callback( {
+                    status : "error",
+                    message : err
+                });
             }
             connection.query("INSERT INTO "+table+ " SET ?",data,(error,result,field)=>{
-                this.getConnection((res)=>{
-                    return callback( {
-                        status : "error",
-                        message : err
-                    });
-                });
                 connection.release();
                 return callback(error ?
                     {
@@ -100,9 +99,6 @@ class MySQL{
                     });
                 }
             connection.query("DELETE FROM "+table+ " WHERE ?",data,(error,result,field)=>{
-                this.getConnection((res)=>{
-
-                });
                 connection.release();
                 return callback(error ? 
                     {
@@ -129,9 +125,6 @@ class MySQL{
                     });
                 }
             connection.query("UPDATE "+table+ " SET ? WHERE ?",[data,condition],(error,result,field)=>{
-                this.getConnection((res)=>{
-
-                });
                 connection.release();
                 return callback(error ?
                     {
