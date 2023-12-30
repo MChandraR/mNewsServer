@@ -24,7 +24,7 @@ class MySQL{
             database : process.env.DB
         });
         this.db.connect((e)=>{
-            
+
         });
     }
 
@@ -33,7 +33,6 @@ class MySQL{
         let qry = "SELECT "+field+" FROM " + model;
         //console.log(qry)
         this.db.query(qry,(error,result,field)=>{
-            if(error) this.setConnection();
             return callback(error ? {
                 status : "error",
                 message : error
