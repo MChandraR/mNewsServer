@@ -40,7 +40,11 @@ class MySQL{
         let qry = "SELECT "+field+" FROM " + model;
         this.getConnection((err, connection) => {
             if (err) {
-                reject(err);
+                console.log(err);
+                return callback( {
+                    status : "error",
+                    message : err
+                });
             }
 
             connection.query(qry,(error,result,field)=>{
@@ -61,11 +65,14 @@ class MySQL{
     async insert(table,data,callback){
         this.getConnection((err, connection) => {
             if (err) {
-                reject(err);
+                console.log(err);
             }
             connection.query("INSERT INTO "+table+ " SET ?",data,(error,result,field)=>{
                 this.getConnection((res)=>{
-
+                    return callback( {
+                        status : "error",
+                        message : err
+                    });
                 });
                 connection.release();
                 return callback(error ?
@@ -86,7 +93,11 @@ class MySQL{
     async remove(table,data,callback){
         this.getConnection((err, connection) => {
                 if (err) {
-                    reject(err);
+                    console.log(err);
+                    return callback( {
+                        status : "error",
+                        message : err
+                    });
                 }
             connection.query("DELETE FROM "+table+ " WHERE ?",data,(error,result,field)=>{
                 this.getConnection((res)=>{
@@ -111,7 +122,11 @@ class MySQL{
     async update(table,data,condition,callback){
         this.getConnection((err, connection) => {
                 if (err) {
-                    reject(err);
+                    console.log(err);
+                    return callback( {
+                        status : "error",
+                        message : err
+                    });
                 }
             connection.query("UPDATE "+table+ " SET ? WHERE ?",[data,condition],(error,result,field)=>{
                 this.getConnection((res)=>{
